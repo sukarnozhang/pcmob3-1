@@ -1,11 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
-  TouchableOpacity,
+  TouchableOpacity, Button
+  
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -18,10 +19,15 @@ function HomeScreen({ navigation }) {
     { red: 0, green: 0, blue: 255, id: "2" },
   ]);
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <Button onPress={addColor} title="Add Color" />,
+    });
+  });
+
   function renderItem({ item }) {
     return <BlockRGB red={item.red} green={item.green} blue={item.blue} />;
   }
-
 
   function renderItem({ item }) {
     return (
@@ -32,8 +38,6 @@ function HomeScreen({ navigation }) {
       </TouchableOpacity>
     );
   }
- 
-
 
   function addColor() {
     setColorArray([
@@ -48,9 +52,7 @@ function HomeScreen({ navigation }) {
   }
 
   function noColor() {
-    setColorArray([
-      
-    ]);
+    setColorArray([]);
   }
 
   return (
@@ -68,7 +70,7 @@ function HomeScreen({ navigation }) {
       >
         <Text style={{ color: "red" }}>No colour</Text>
       </TouchableOpacity>
-     
+
       <FlatList style={styles.list} data={colorArray} renderItem={renderItem} />
     </View>
   );
@@ -77,7 +79,7 @@ function HomeScreen({ navigation }) {
 function DetailsScreen({ route }) {
   // Destructure this object so we don't have to type route.params.red etc
   const { red, green, blue } = route.params;
- 
+
   return (
     <View
       style={[
@@ -92,8 +94,7 @@ function DetailsScreen({ route }) {
       </View>
     </View>
   );
- }
- 
+}
 
 const Stack = createStackNavigator();
 
@@ -118,8 +119,5 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
-
-
-
 
 ////////////////////////////////////////////////////////
